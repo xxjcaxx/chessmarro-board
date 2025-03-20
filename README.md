@@ -9,7 +9,7 @@ It tries to be updated with the state of the art in 2025 of library creation for
 Install:
 
 ```bash
-npm install
+npm install chessmarro-board
 ```
 
 It declares a Web Component and you can use it in many ways. You can see the examples folder. Basically, you have to import the library and initialize:
