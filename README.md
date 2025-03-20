@@ -69,6 +69,14 @@ You can interact with the board, if you drag and drop a piece it will trigger an
 
 You can set and get the FEN position with `setFen`, `getFen`.
 
+## CSS
+
+The Board is inside a Shadow Root, so you have to consider it if you want to modify styles. 
+
+The board tries to fill the element at 100% and to be responsive at any size. 
+
+
+
 
 The base of the package is https://github.com/kbysiec/vite-vanilla-ts-lib-starter
 
