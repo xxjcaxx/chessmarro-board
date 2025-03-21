@@ -7,15 +7,12 @@
   text-align: center;
 }
 
-
-
-
 #divBoard {
   display: grid;
   /*grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);*/
-  width: 100%;  
-  aspect-ratio: 1 / 1; 
+  width: 100%;
+  aspect-ratio: 1 / 1;
 }
 
 .piece {
@@ -24,24 +21,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-weight: bolder;
   font-size: 3vw;
 }
 
 .piece img {
   width: 100%;
-  transition: transform 0.5s ease-in-out; 
+  transition: transform 0.5s ease-in-out;
 }
 
 .piece.numbers {
   grid-column: span 1;
 
-  color: white;
+  color: #fff;
 }
 
 .piece.letters {
   grid-row: span 1;
 
-  color: white;
+  color: #fff;
 }
