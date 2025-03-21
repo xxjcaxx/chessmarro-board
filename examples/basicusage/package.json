@@ -12,6 +12,6 @@
     "vite": "^6.2.0"
   },
   "dependencies": {
-    "chessmarro-board": "^0.0.6"
+    "chessmarro-board": "file:../.."
   }
 }

@@ -9,14 +9,16 @@
   <body>
     <div id="literal">
       <h2>Literal Chessmarro board</h2>
-      <chessmarro-board 
-      data-fen="3b2k1/1p3p2/p1p5/2P4p/1P2P1p1/5p2/5P2/4RK2 w - - 0 0" 
-      data-black-color="#400" 
-      data-white-color="#e77" 
-      data-numbers="true"
-      data-numbers-color="#555"
+      <chessmarro-board
+        id="htmlboard"
+        data-fen="3b2k1/1p3p2/p1p5/2P4p/1P2P1p1/5p2/5P2/4RK2 w - - 0 0"
+        data-black-color="#400"
+        data-white-color="#e77"
+        data-numbers="true"
+        data-numbers-color="#555"
       ></chessmarro-board>
     </div>
+    <button id="buttonMoveTest">Move e1e3</button>
     <div id="javascript"></div>
     <script type="module" src="/src/main.js"></script>
   </body>

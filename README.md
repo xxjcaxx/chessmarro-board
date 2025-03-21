@@ -75,6 +75,7 @@ The Board is inside a Shadow Root, so you have to consider it if you want to mod
 
 The board tries to fill the element at 100% and to be responsive at any size. 
 
+You can change colors by `data-`.
 
 
 

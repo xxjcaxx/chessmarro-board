@@ -1,29 +1,35 @@
-export { initChessmarroBoard }
+export { initChessmarroBoard };
 
-import { setFen } from "./board";
+import { setFen, movePiece } from "./board";
 import styles from "./style.css?inline";
-const chessImages = import.meta.glob<{ default: string }>('./pieces/*', { eager: true });
+const chessImages = import.meta.glob<{ default: string }>("./pieces/*", {
+  eager: true,
+});
 
 type Board = number[][];
-
+const letters = [" ", "a", "b", "c", "d", "e", "f", "g", "h", " "];
 
 class BoardElement extends HTMLElement {
-
-  board: Board | null;
-  chessImages = Object.fromEntries(Object.entries(chessImages).map(([key, value]) => [`${key}`.split('/')[2].split('.')[0], value.default]));
+  board: Board;
+  chessImages = Object.fromEntries(
+    Object.entries(chessImages).map(([key, value]) => [
+      `${key}`.split("/")[2].split(".")[0],
+      value.default,
+    ])
+  );
   blackColor: string = "#b58863";
   whiteColor: string = "#f0d9b5";
   numbers: boolean = false;
   numbersColor: string = "black";
 
-
   constructor() {
     super();
-    this.board = null;
+    this.board = Array(8)
+      .fill(0)
+      .map(() => Array(8).fill(0));
   }
 
   connectedCallback() {
-    console.log("Board Added to page");
     if (this.dataset.fen) {
       this.board = setFen(this.dataset.fen);
     }
@@ -34,33 +40,32 @@ class BoardElement extends HTMLElement {
       this.whiteColor = this.dataset.whiteColor;
     }
     if (this.dataset.numbers) {
-      this.numbers = this.dataset.numbers === 'true';
+      this.numbers = this.dataset.numbers === "true";
     }
     if (this.dataset.numbersColor) {
       this.numbersColor = this.dataset.numbersColor;
     }
 
     this.render();
-
   }
 
   disconnectedCallback() {
-   // console.log("Custom element removed from page.");
+    // console.log("Custom element removed from page.");
   }
 
   adoptedCallback() {
-  //  console.log("Custom element moved to new page.");
+    //  console.log("Custom element moved to new page.");
   }
 
-  /* attributeChangedCallback(name, oldValue, newValue) {
-     console.log(`Attribute ${name} has changed from ${oldValue} to ${newValue}.`);
-   }*/
-
   render() {
-    const shadow = this.attachShadow({ mode: "open" });
-    const divBoard = document.createElement('div');
-    divBoard.id = 'divBoard';
-    shadow.append(divBoard);
+    const shadow = this.shadowRoot
+      ? this.shadowRoot
+      : this.attachShadow({ mode: "open" });
+
+    const fragment = document.createDocumentFragment();
+    const divBoard = document.createElement("div");
+    divBoard.id = "divBoard";
+    divBoard.style.opacity = "0";
 
     const styleSheets = new CSSStyleSheet();
     styleSheets.replace(styles).then(() => {
@@ -70,106 +75,169 @@ class BoardElement extends HTMLElement {
                                         grid-template-columns: repeat(${this.numbers ? 26 : 24}, 1fr);
                                         grid-template-rows: repeat(${this.numbers ? 26 : 24}, 1fr);
                                       }`);
-      styleSheets.insertRule(`.piece.numbers, .piece.letters { background-color: ${this.numbersColor};}`);
-
-
+      styleSheets.insertRule(
+        `.piece.numbers, .piece.letters { background-color: ${this.numbersColor};}`
+      );
     });
 
     shadow.adoptedStyleSheets = [styleSheets];
-    const letters = [" ", "a", "b", "c", "d", "e", "f", "g", "h", " "];
-    divBoard.innerHTML = this.board ?
-    // Top Letters
-      `${this.numbers ? letters
-        .map(letter => `<div class="piece letters ${letter != " " ? '' : 'numbers'}">${letter}</div>`).join('') : ''}` +
 
-      this.board.map((row, idRow) => 
-        //left numbers
-        `${this.numbers ? `
-          <div class="piece numbers">${8-idRow}</div>
-          `: ''}` + 
-          // Pieces
-          row.map((piece, idCol) => `
+    divBoard.innerHTML = this.board
+      ? // Top Letters
+        `${
+          this.numbers
+            ? letters
+                .map(
+                  letter =>
+                    `<div class="piece letters ${letter != " " ? "" : "numbers"}">${letter}</div>`
+                )
+                .join("")
+            : ""
+        }` +
+        this.board
+          .map(
+            (row, idRow) =>
+              //left numbers
+              `${
+                this.numbers
+                  ? `
+          <div class="piece numbers">${8 - idRow}</div>
+          `
+                  : ""
+              }` +
+              // Pieces
+              row
+                .map(
+                  (piece, idCol) => `
             <div class="piece
-            ${(idRow + idCol) % 2 === 1 ? 'black' : ''}
-            ${(idRow + idCol) % 2 === 0 ? 'white' : ''}
+            ${(idRow + idCol) % 2 === 1 ? "black" : ""}
+            ${(idRow + idCol) % 2 === 0 ? "white" : ""}
             "
-            data-position="${letters[idCol+1]}${8-idRow}"
-            data-letter="${letters[idCol+1]}"
-            data-number="${7-idRow}"
+            data-position="${letters[idCol + 1]}${8 - idRow}"
+            data-letter="${letters[idCol + 1]}"
+            data-number="${7 - idRow}"
             data-matrix_position="[${idCol},${idRow}]"
-            >${piece != 0 ? `<img data-piece="${piece}" data-position="${letters[idCol+1]}${8-idRow}"
-            data-letter="${letters[idCol+1]}"
-            data-number="${8-idRow}"
-            data-matrix_position="[${idCol},${idRow}]"  src="${this.chessImages[piece]}">` : ''}</div>
-            `).join('') 
+            >${
+              piece != 0
+                ? `<img data-piece="${piece}" data-position="${letters[idCol + 1]}${8 - idRow}"
+            data-letter="${letters[idCol + 1]}"
+            data-number="${8 - idRow}"
+            data-matrix_position="[${idCol},${idRow}]"  src="${this.chessImages[piece]}">`
+                : ""
+            }</div>
+            `
+                )
+                .join("") +
+              // right numbers
+              `${
+                this.numbers
+                  ? `
+          <div class="piece numbers">${8 - idRow}</div>
+          `
+                  : ""
+              }`
+          )
+          .join("") +
+        // Bottom Letters
+        `${this.numbers ? letters.map(letter => `<div class="piece letters ${letter != " " ? "" : "numbers"}">${letter}</div>`).join("") : ""}`
+      : "";
 
-            // right numbers
-            + `${this.numbers ? `
-          <div class="piece numbers">${8-idRow}</div>
-          `: ''}`
-      ).join('') 
+    // Events
 
-      // Bottom Letters
-      + `${this.numbers ? letters.map(letter => `<div class="piece letters ${letter != " " ? '' : 'numbers'}">${letter}</div>`).join('') : ''}` : '';
+    divBoard.querySelectorAll("div.piece").forEach(divPiece => {
+      const pieceElement = divPiece as HTMLElement;
 
-      // Events
-
-      divBoard.querySelectorAll('div.piece').forEach(divPiece =>{
- 
-        const pieceElement = divPiece as HTMLElement;
-        
-        pieceElement.addEventListener("drop",(event: DragEvent)=>{
-          event.preventDefault();
-          const eventJSON = event.dataTransfer?.getData("application/json") || ''
-          const eventData = JSON.parse(eventJSON);
-          //console.log(event.dataTransfer?.getData("application/json"));
-          this.dispatchEvent(new CustomEvent('chessmarro-move',{
+      pieceElement.addEventListener("drop", (event: DragEvent) => {
+        event.preventDefault();
+        const eventJSON = event.dataTransfer?.getData("application/json") || "";
+        const eventData = JSON.parse(eventJSON);
+        //console.log(event.dataTransfer?.getData("application/json"));
+        this.dispatchEvent(
+          new CustomEvent("chessmarro-move", {
             bubbles: true,
             composed: true,
-            detail:{
-              origin: {...eventData},
-              destiny: {position: pieceElement.dataset.position, matrix_position: pieceElement.dataset.matrix_position},
-              uci: eventData.position+pieceElement.dataset.position
-            }
-          }))
-        });
-        pieceElement.addEventListener("dragover",(event)=>{
-          event.preventDefault();
-          //console.log(event);
-        });
+            detail: {
+              origin: { ...eventData },
+              destiny: {
+                position: pieceElement.dataset.position,
+                matrix_position: pieceElement.dataset.matrix_position,
+              },
+              uci: eventData.position + pieceElement.dataset.position,
+            },
+          })
+        );
       });
-      divBoard.querySelectorAll('img').forEach(img =>{
-        img.addEventListener("dragstart",(event)=>{
-          if (event.dataTransfer && event.target instanceof HTMLImageElement) {
-            event.dataTransfer.setData("text/plain", event.target.dataset.piece!);
-            event.dataTransfer.setData("application/json", JSON.stringify({
-              piece: event.target.dataset.piece!, 
+      pieceElement.addEventListener("dragover", event => {
+        event.preventDefault();
+        //console.log(event);
+      });
+    });
+    divBoard.querySelectorAll("img").forEach(img => {
+      img.addEventListener("dragstart", event => {
+        if (event.dataTransfer && event.target instanceof HTMLImageElement) {
+          event.dataTransfer.setData("text/plain", event.target.dataset.piece!);
+          event.dataTransfer.setData(
+            "application/json",
+            JSON.stringify({
+              piece: event.target.dataset.piece!,
               position: event.target.dataset.position,
-              matrix_position: event.target.dataset.matrix_position
-            }));
-            //event.dataTransfer.setDragImage(img, 10, 10);
-          
+              matrix_position: event.target.dataset.matrix_position,
+            })
+          );
         }
-          
-        });
-        
       });
+    });
+    fragment.appendChild(divBoard);
+    shadow.replaceChildren(fragment);
+    requestAnimationFrame(() => {
+      divBoard.style.opacity = "1"; // Mostramos el tablero suavemente
+    });
+  }
+
+  movePiece([ox, oy]: number[], [dx, dy]: number[]) {
+    const piece = this.board[oy][ox];
+    const pieceDestiny = this.board[dy][dx];
+
+    const pieceImg = this.shadowRoot!.querySelector(
+      `img[data-position="${letters[ox + 1]}${8 - oy}"]`
+    ) as HTMLElement;
+    const destinyDiv = this.shadowRoot!.querySelector(
+      `div[data-position="${letters[dx + 1]}${8 - dy}"]`
+    ) as HTMLElement;
+    console.log(piece, pieceDestiny, pieceImg, destinyDiv);
+    //data-position="${letters[idCol + 1]}${8 - idRow}"
+    const imgRect = pieceImg!.getBoundingClientRect();
+    const targetRect = destinyDiv!.getBoundingClientRect();
+    const deltaX = targetRect.left - imgRect.left;
+    const deltaY = targetRect.top - imgRect.top;
+
+    pieceImg!.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+    pieceImg!.addEventListener(
+      "transitionend",
+      () => {
+        console.log("Animación terminada 🎉");
+        this.board = movePiece(this.board)([ox, oy], [dx, dy]);
+        console.log(this.board);
+
+        this.render();
+      },
+      { once: true }
+    );
   }
 }
 
-const initChessmarroBoard = (name="chessmarro-board") => {
+const initChessmarroBoard = (name = "chessmarro-board") => {
   customElements.define(name, BoardElement);
-}
-
+};
 
 /*
 
 TODO
 
-Esquema de colores
-Imagenes de las piezas
-Números en los márgenes
+
 Drag and Drop
 Flechas y demás
- 
+movimientos animados
+movimientos legales 
+
 */
