@@ -14,6 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(event);
   });
   document.querySelector("#buttonMoveTest").addEventListener("click", () => {
-    document.querySelector("#htmlboard").movePiece([4, 7], [4, 5]);
+    document.querySelector("#htmlboard").movePiece([4, 7], [4, 5],1);
   });
 });

@@ -7,7 +7,18 @@ const chessImages = import.meta.glob<{ default: string }>("./pieces/*", {
 });
 
 type Board = number[][];
+type Move = number[]; // oy ox dy dx
 const letters = [" ", "a", "b", "c", "d", "e", "f", "g", "h", " "];
+
+const uciToMove = (uci: string): Move => {
+  const [oy, ox, dy, dx] = uci.split("");
+  return [
+    letters.indexOf(oy) - 1,
+    8 - parseInt(ox),
+    letters.indexOf(dy) - 1,
+    8 - parseInt(dx),
+  ];
+};
 
 class BoardElement extends HTMLElement {
   board: Board;
@@ -21,6 +32,7 @@ class BoardElement extends HTMLElement {
   whiteColor: string = "#f0d9b5";
   numbers: boolean = false;
   numbersColor: string = "black";
+  legalMoves: Move[] = [];
 
   constructor() {
     super();
@@ -44,6 +56,10 @@ class BoardElement extends HTMLElement {
     }
     if (this.dataset.numbersColor) {
       this.numbersColor = this.dataset.numbersColor;
+    }
+    if (this.dataset.legalMoves) {
+      this.legalMoves = JSON.parse(this.dataset.legalMoves).map(uciToMove);
+      //console.log(this.legalMoves);
     }
 
     this.render();
@@ -184,6 +200,14 @@ class BoardElement extends HTMLElement {
               matrix_position: event.target.dataset.matrix_position,
             })
           );
+          console.log(img);
+
+          //const [oy,ox] = JSON.parse(event.target.dataset.matrix_position!)
+          //const legalMovesFromImg = this.legalMoves.filter(m => m[0]==parseInt(oy) && m[1]==parseInt(ox))
+          //console.log(this.legalMoves,legalMovesFromImg,oy,ox);
+          /* legalMovesFromImg.forEach(move=>{
+
+          });*/
         }
       });
     });
@@ -194,9 +218,9 @@ class BoardElement extends HTMLElement {
     });
   }
 
-  movePiece([ox, oy]: number[], [dx, dy]: number[]) {
-    const piece = this.board[oy][ox];
-    const pieceDestiny = this.board[dy][dx];
+  movePiece([ox, oy]: number[], [dx, dy]: number[], speed: number = 0.5) {
+    //const piece = this.board[oy][ox];
+    //const pieceDestiny = this.board[dy][dx];
 
     const pieceImg = this.shadowRoot!.querySelector(
       `img[data-position="${letters[ox + 1]}${8 - oy}"]`
@@ -204,25 +228,23 @@ class BoardElement extends HTMLElement {
     const destinyDiv = this.shadowRoot!.querySelector(
       `div[data-position="${letters[dx + 1]}${8 - dy}"]`
     ) as HTMLElement;
-    console.log(piece, pieceDestiny, pieceImg, destinyDiv);
-    //data-position="${letters[idCol + 1]}${8 - idRow}"
-    const imgRect = pieceImg!.getBoundingClientRect();
-    const targetRect = destinyDiv!.getBoundingClientRect();
-    const deltaX = targetRect.left - imgRect.left;
-    const deltaY = targetRect.top - imgRect.top;
 
-    pieceImg!.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-    pieceImg!.addEventListener(
-      "transitionend",
-      () => {
-        console.log("Animación terminada 🎉");
-        this.board = movePiece(this.board)([ox, oy], [dx, dy]);
-        console.log(this.board);
-
-        this.render();
-      },
-      { once: true }
-    );
+    if (pieceImg && destinyDiv) {
+      const imgRect = pieceImg!.getBoundingClientRect();
+      const targetRect = destinyDiv!.getBoundingClientRect();
+      const deltaX = targetRect.left - imgRect.left;
+      const deltaY = targetRect.top - imgRect.top;
+      pieceImg!.style.transition = `transform ${speed}s ease-in-out`;
+      pieceImg!.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+      pieceImg!.addEventListener(
+        "transitionend",
+        () => {
+          this.board = movePiece(this.board)([ox, oy], [dx, dy]);
+          this.render();
+        },
+        { once: true }
+      );
+    }
   }
 }
 

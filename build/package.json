@@ -1,16 +1,19 @@
 {
   "name": "chessmarro-board",
   "private": false,
-  "version": "0.0.6",
-  "module": "./dist/chessmarro-board.js",
+  "version": "0.0.8",
+  "module": "./build/dist/chessmarro-board.js",
   "type": "module",
   "exports": {
-    ".": "./dist/chessmarro-board.js"
+    ".": "./build/dist/chessmarro-board.js"
   },
-  "types": "./dist/index.d.ts",
+  "types": "./build/dist/index.d.ts",
+  "files": [
+    "build/dist"
+  ],
   "scripts": {
     "dev": "vite --host",
-    "build": "rimraf build/**/* && tsc && vite build && dts-bundle-generator --config ./dts-bundle-generator.config.ts && copyfiles ./package.json build",
+    "build": "rimraf build/**/* && vite build && dts-bundle-generator --config ./dts-bundle-generator.config.ts && copyfiles ./package.json build",
     "test": "vitest watch",
     "test:coverage": "vitest --coverage",
     "lint:scripts": "eslint . --ext .ts",
@@ -49,7 +52,5 @@
     "vite": "^6.2.0",
     "vitest": "^3.0.7"
   },
-  "dependencies": {
-
-  }
+  "dependencies": {}
 }
