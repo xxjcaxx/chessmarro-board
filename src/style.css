@@ -8,37 +8,35 @@
 }
 
 #divBoard {
+  aspect-ratio: 1 / 1;
   display: grid;
   /*grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);*/
   width: 100%;
-  aspect-ratio: 1 / 1;
 }
 
 .piece {
+  align-items: center;
+  display: flex;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 3vw;
+  font-weight: bolder;
   grid-column: span 3;
   grid-row: span 3;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-  font-weight: bolder;
-  font-size: 3vw;
 }
 
 .piece img {
-  width: 100%;
   transition: transform 0.5s ease-in-out;
+  width: 100%;
 }
 
 .piece.numbers {
-  grid-column: span 1;
-
   color: #fff;
+  grid-column: span 1;
 }
 
 .piece.letters {
-  grid-row: span 1;
-
   color: #fff;
+  grid-row: span 1;
 }
