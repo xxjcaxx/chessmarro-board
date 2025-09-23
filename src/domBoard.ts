@@ -22,6 +22,7 @@ const uciToMove = (uci: string): Move => {
 
 class BoardElement extends HTMLElement {
   board: Board;
+  divBoard: HTMLElement;
   chessImages = Object.fromEntries(
     Object.entries(chessImages).map(([key, value]) => [
       `${key}`.split("/")[2].split(".")[0],
@@ -39,6 +40,8 @@ class BoardElement extends HTMLElement {
     this.board = Array(8)
       .fill(0)
       .map(() => Array(8).fill(0));
+
+    this.divBoard = document.createElement("div");
   }
 
   connectedCallback() {
@@ -73,30 +76,8 @@ class BoardElement extends HTMLElement {
     //  console.log("Custom element moved to new page.");
   }
 
-  render() {
-    const shadow = this.shadowRoot
-      ? this.shadowRoot
-      : this.attachShadow({ mode: "open" });
-
-    const fragment = document.createDocumentFragment();
-    const divBoard = document.createElement("div");
-    divBoard.id = "divBoard";
-    divBoard.style.opacity = "0";
-
-    const styleSheets = new CSSStyleSheet();
-    styleSheets.replace(styles).then(() => {
-      styleSheets.insertRule(`.black{background-color: ${this.blackColor};}`);
-      styleSheets.insertRule(`.white{background-color: ${this.whiteColor};}`);
-      styleSheets.insertRule(`#divBoard {
-                                        grid-template-columns: repeat(${this.numbers ? 26 : 24}, 1fr);
-                                        grid-template-rows: repeat(${this.numbers ? 26 : 24}, 1fr);
-                                      }`);
-      styleSheets.insertRule(
-        `.piece.numbers, .piece.letters { background-color: ${this.numbersColor};}`
-      );
-    });
-
-    shadow.adoptedStyleSheets = [styleSheets];
+  refresh() {
+    const divBoard = this.divBoard;
 
     divBoard.innerHTML = this.board
       ? // Top Letters
@@ -211,6 +192,36 @@ class BoardElement extends HTMLElement {
         }
       });
     });
+  }
+
+  render() {
+    const shadow = this.shadowRoot
+      ? this.shadowRoot
+      : this.attachShadow({ mode: "open" });
+
+    const fragment = document.createDocumentFragment();
+    //this.divBoard = document.createElement("div");
+    const divBoard = this.divBoard;
+    divBoard.id = "divBoard";
+    divBoard.style.opacity = "0";
+
+    const styleSheets = new CSSStyleSheet();
+    styleSheets.replace(styles).then(() => {
+      styleSheets.insertRule(`.black{background-color: ${this.blackColor};}`);
+      styleSheets.insertRule(`.white{background-color: ${this.whiteColor};}`);
+      styleSheets.insertRule(`#divBoard {
+                                        grid-template-columns: repeat(${this.numbers ? 26 : 24}, 1fr);
+                                        grid-template-rows: repeat(${this.numbers ? 26 : 24}, 1fr);
+                                      }`);
+      styleSheets.insertRule(
+        `.piece.numbers, .piece.letters { background-color: ${this.numbersColor};}`
+      );
+    });
+
+    shadow.adoptedStyleSheets = [styleSheets];
+
+    this.refresh();
+
     fragment.appendChild(divBoard);
     shadow.replaceChildren(fragment);
     requestAnimationFrame(() => {
