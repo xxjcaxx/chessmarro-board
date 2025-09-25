@@ -55,7 +55,6 @@ const G = (r, o) => r + o, X = () => Array(8).fill(0).map(() => Array(8).fill(0)
   __proto__: null,
   default: I
 }, Symbol.toStringTag, { value: "Module" })), R = "#app{color:#2c3e50;font-family:Avenir,Helvetica,Arial,sans-serif;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;margin-top:60px;text-align:center}#divBoard{aspect-ratio:1 / 1;display:grid;width:100%}.piece{align-items:center;display:flex;font-family:Gill Sans,Gill Sans MT,Calibri,Trebuchet MS,sans-serif;font-size:3vw;font-weight:bolder;grid-column:span 3;grid-row:span 3;justify-content:center}.piece img{transition:transform .5s ease-in-out;width:100%}.piece.numbers{color:#fff;grid-column:span 1}.piece.letters{color:#fff;grid-row:span 1}", F = /* @__PURE__ */ Object.assign({
-}, Symbol.toStringTag, { value: "Module" })), R = "#app{color:#2c3e50;font-family:Avenir,Helvetica,Arial,sans-serif;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;margin-top:60px;text-align:center}#divBoard{aspect-ratio:1 / 1;display:grid;width:100%}.piece{align-items:center;display:flex;font-family:Gill Sans,Gill Sans MT,Calibri,Trebuchet MS,sans-serif;font-size:3vw;font-weight:bolder;grid-column:span 3;grid-row:span 3;justify-content:center}.piece img{transition:transform .5s ease-in-out;width:100%}.piece.numbers{color:#fff;grid-column:span 1}.piece.letters{color:#fff;grid-row:span 1}", F = /* @__PURE__ */ Object.assign({
   "./pieces/B.svg": k,
   "./pieces/K.svg": M,
   "./pieces/N.svg": x,
@@ -68,9 +67,14 @@ const G = (r, o) => r + o, X = () => Array(8).fill(0).map(() => Array(8).fill(0)
   "./pieces/p.svg": V,
   "./pieces/q.svg": q,
   "./pieces/r.svg": D
-}), d = [" ", "a", "b", "c", "d", "e", "f", "g", "h", " "], J = (r) => {
-  const [e, o, s, i] = r.split("");
-  return [d.indexOf(e) - 1, 8 - parseInt(o), d.indexOf(s) - 1, 8 - parseInt(i)];
+}), a = [" ", "a", "b", "c", "d", "e", "f", "g", "h", " "], J = (r) => {
+  const [o, s, t, e] = r.split("");
+  return [
+    a.indexOf(o) - 1,
+    8 - parseInt(s),
+    a.indexOf(t) - 1,
+    8 - parseInt(e)
+  ];
 };
 class K extends HTMLElement {
   constructor() {

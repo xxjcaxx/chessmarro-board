@@ -251,7 +251,7 @@ class BoardElement extends HTMLElement {
         "transitionend",
         () => {
           this.board = movePiece(this.board)([ox, oy], [dx, dy]);
-          this.render();
+          this.refresh();
         },
         { once: true }
       );

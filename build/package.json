@@ -1,15 +1,19 @@
 {
   "name": "chessmarro-board",
   "private": false,
-  "version": "0.0.9",
+  "version": "0.0.12",
   "module": "./build/dist/chessmarro-board.js",
   "type": "module",
   "exports": {
-    ".": "./build/dist/chessmarro-board.js"
+    ".": {
+      "import": "./build/dist/chessmarro-board.js",
+      "types": "./index.d.ts"
+    }
   },
   "types": "./index.d.ts",
   "files": [
-    "build/dist"
+    "build/dist",
+    "index.d.ts"
   ],
   "scripts": {
     "dev": "vite --host",
