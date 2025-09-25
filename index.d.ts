@@ -6,7 +6,9 @@ export declare const generateArrayBoard: () => Board;
 export declare const setFen: (fen: string) => Board;
 export declare const setStartPosition: () => Board;
 export declare const getFen: (board: Board) => string;
-export declare const movePiece: (board: Board) => ([ox, oy]: number[], [dx, dy]: number[]) => Board;
+export declare const movePiece: (
+  board: Board
+) => ([ox, oy]: number[], [dx, dy]: number[]) => Board;
 export declare const initChessmarroBoard: (name?: string) => void;
 
 export {};

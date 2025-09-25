@@ -54,7 +54,7 @@ const G = (r, e) => r + e, X = () => Array(8).fill(0).map(() => Array(8).fill(0)
 }, Symbol.toStringTag, { value: "Module" })), I = "data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='45'%20height='45'%20fill-rule='evenodd'%20stroke='%23000'%20xmlns:v='https://vecta.io/nano'%3e%3cg%20stroke-linejoin='round'%20stroke-width='1.5'%3e%3cpath%20d='M9%2039h27v-3H9v3zm3.5-7l1.5-2.5h17l1.5%202.5h-20z'/%3e%3cpath%20d='M12%2036v-4h21v4H12z'/%3e%3c/g%3e%3cpath%20d='M14%2029.5v-13h17v13H14z'%20stroke-linejoin='miter'%20stroke-width='1.5'/%3e%3cg%20stroke-linejoin='round'%3e%3cpath%20d='M14%2016.5L11%2014h23l-3%202.5H14z'%20stroke-width='1.5'/%3e%3cpath%20d='M11%2014V9h4v2h5V9h5v2h5V9h4v5H11z'%20stroke-width='1.5'/%3e%3c/g%3e%3cpath%20d='M12%2035.5h21m-20-4h19m-18-2h17m-17-13h17M11%2014h23'%20stroke-linejoin='miter'%20fill='none'%20stroke='%23fff'%20stroke-width='1'%20stroke-linecap='round'/%3e%3c/svg%3e", D = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: I
-}, Symbol.toStringTag, { value: "Module" })), R = "#app{color:#2c3e50;font-family:Avenir,Helvetica,Arial,sans-serif;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;margin-top:60px;text-align:center}#divBoard{display:grid;width:100%;aspect-ratio:1 / 1}.piece{grid-column:span 3;grid-row:span 3;display:flex;align-items:center;justify-content:center;font-family:Gill Sans,Gill Sans MT,Calibri,Trebuchet MS,sans-serif;font-weight:bolder;font-size:3vw}.piece img{width:100%;transition:transform .5s ease-in-out}.piece.numbers{grid-column:span 1;color:#fff}.piece.letters{grid-row:span 1;color:#fff}", F = /* @__PURE__ */ Object.assign({
+}, Symbol.toStringTag, { value: "Module" })), R = "#app{color:#2c3e50;font-family:Avenir,Helvetica,Arial,sans-serif;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;margin-top:60px;text-align:center}#divBoard{aspect-ratio:1 / 1;display:grid;width:100%}.piece{align-items:center;display:flex;font-family:Gill Sans,Gill Sans MT,Calibri,Trebuchet MS,sans-serif;font-size:3vw;font-weight:bolder;grid-column:span 3;grid-row:span 3;justify-content:center}.piece img{transition:transform .5s ease-in-out;width:100%}.piece.numbers{color:#fff;grid-column:span 1}.piece.letters{color:#fff;grid-row:span 1}", F = /* @__PURE__ */ Object.assign({
   "./pieces/B.svg": k,
   "./pieces/K.svg": M,
   "./pieces/N.svg": x,
@@ -69,7 +69,12 @@ const G = (r, e) => r + e, X = () => Array(8).fill(0).map(() => Array(8).fill(0)
   "./pieces/r.svg": D
 }), d = [" ", "a", "b", "c", "d", "e", "f", "g", "h", " "], J = (r) => {
   const [e, o, s, i] = r.split("");
-  return [d.indexOf(e) - 1, 8 - parseInt(o), d.indexOf(s) - 1, 8 - parseInt(i)];
+  return [
+    d.indexOf(e) - 1,
+    8 - parseInt(o),
+    d.indexOf(s) - 1,
+    8 - parseInt(i)
+  ];
 };
 class K extends HTMLElement {
   constructor() {

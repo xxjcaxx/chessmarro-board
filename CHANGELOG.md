@@ -13,3 +13,7 @@ Publish in public repository
 ## [0.0.9] - 2025-03-24
 
 Publish just the library and some fixes, still not stable
+
+## [0.0.10] - 2025-07-25
+
+Update to Angular 20 compatibility
