@@ -33,10 +33,12 @@
 
 .piece.numbers {
   color: #fff;
+  font-size: 1vw;
   grid-column: span 1;
 }
 
 .piece.letters {
   color: #fff;
+  font-size: 1vw;
   grid-row: span 1;
 }
